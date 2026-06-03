@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Pet Simulator - 宠物模拟器</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 动态背景 -->
+    <div class="game-bg">
+        <div class="bg-particles" id="bgParticles"></div>
+    </div>
+    
+    <div class="game-container">
+        <!-- 顶部信息栏 -->
+        <header class="top-bar">
+            <div class="logo-section">
+                <span class="logo-icon">🎮</span>
+                <h1 class="logo-text">Pet Simulator</h1>
+            </div>
+            
+            <div class="player-section">
+                <div class="player-avatar">
+                    <span>🧑‍🎓</span>
+                </div>
+                <div class="player-info">
+                    <span class="player-name">训练师</span>
+                    <div class="level-bar">
+                        <span class="level-text">LV. <span id="playerLevel">1</span></span>
+                        <div class="exp-bar">
+                            <div class="exp-fill" id="expFill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resources-section">
+                <div class="resource-item coins">
+                    <span class="resource-icon">🪙</span>
+                    <span class="resource-value" id="coinCount">1,000</span>
+                </div>
+                <div class="resource-item gems">
+                    <span class="resource-icon">💎</span>
+                    <span class="resource-value" id="gemCount">50</span>
+                </div>
+            </div>
+            
+            <div class="server-status" id="serverStatus">
+                <span class="status-indicator"></span>
+                <span class="status-text">连接中...</span>
+            </div>
+        </header>
+
+        <!-- 主内容区 - 桌面端横向布局 -->
+        <main class="main-content">
+            <!-- 左侧主导航 -->
+            <aside class="side-nav">
+                <nav class="nav-menu">
+                    <button class="nav-item active" data-panel="pets" onclick="switchPanel('pets')">
+                        <div class="nav-icon">🏠</div>
+                        <div class="nav-text">
+                            <span class="nav-title">我的宠物</span>
+                            <span class="nav-desc">管理你的宠物队伍</span>
+                        </div>
+                        <span class="nav-badge" id="petCount">0</span>
+                    </button>
+                    
+                    <button class="nav-item" data-panel="summon" onclick="switchPanel('summon')">
+                        <div class="nav-icon">✨</div>
+                        <div class="nav-text">
+                            <span class="nav-title">召唤宠物</span>
+                            <span class="nav-desc">获取新宠物</span>
+                        </div>
+                    </button>
+                    
+                    <button class="nav-item" data-panel="battle" onclick="switchPanel('battle')">
+                        <div class="nav-icon">⚔️</div>
+                        <div class="nav-text">
+                            <span class="nav-title">竞技场</span>
+                            <span class="nav-desc">宠物对战</span>
+                        </div>
+                    </button>
+                    
+                    <button class="nav-item" data-panel="inventory" onclick="switchPanel('inventory')">
+                        <div class="nav-icon">🎒</div>
+                        <div class="nav-text">
+                            <span class="nav-title">背包</span>
+                            <span class="nav-desc">道具和装备</span>
+                        </div>
+                    </button>
+                    
+                    <button class="nav-item" data-panel="shop" onclick="switchPanel('shop')">
+                        <div class="nav-icon">🛒</div>
+                        <div class="nav-text">
+                            <span class="nav-title">商城</span>
+                            <span class="nav-desc">购买道具</span>
+                        </div>
+                    </button>
+                </nav>
+                
+            </aside>
+
+            <!-- 右侧内容区 -->
+            <section class="content-area">
+                <!-- 宠物列表面板 -->
+                <div class="panel active" id="petsPanel">
+                    <div class="panel-header">
+                        <div class="header-left">
+                            <h2 class="panel-title">🏠 我的宠物</h2>
+                            <div class="panel-stats">
+                                <div class="stat-chip">
+                                    <span>🔥</span>
+                                    <span id="fireCount">0</span>
+                                </div>
+                                <div class="stat-chip">
+                                    <span>💧</span>
+                                    <span id="waterCount">0</span>
+                                </div>
+                                <div class="stat-chip">
+                                    <span>⚙️</span>
+                                    <span id="mechCount">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header-right">
+                            <div class="filter-group">
+                                <button class="filter-btn active" data-filter="all">全部</button>
+                                <button class="filter-btn" data-filter="fire">🔥</button>
+                                <button class="filter-btn" data-filter="water">💧</button>
+                                <button class="filter-btn" data-filter="mech">⚙️</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pets-grid" id="petsGrid">
+                        <div class="empty-state">
+                            <div class="empty-icon">🎯</div>
+                            <h3>还没有宠物</h3>
+                            <p>点击左侧"召唤宠物"获取你的第一个伙伴！</p>
+                            <button class="cta-button" onclick="switchPanel('summon')">
+                                ✨ 去召唤宠物
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 召唤宠物面板 -->
+                <div class="panel" id="summonPanel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">✨ 召唤宠物</h2>
+                        <p class="panel-desc">选择一个召唤阵，尝试获取新宠物！</p>
+                    </div>
+                    
+                    <div class="summon-area">
+                        <div class="summon-grid">
+                            <div class="summon-card" onclick="summonPet('fire')">
+                                <div class="summon-bg fire-bg"></div>
+                                <div class="summon-content">
+                                    <div class="summon-icon">🔥</div>
+                                    <h3 class="summon-name">火焰召唤阵</h3>
+                                    <p class="summon-desc">召唤火焰系宠物</p>
+                                    <div class="summon-cost">
+                                        <span>🪙</span>
+                                        <span>200</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="summon-card" onclick="summonPet('water')">
+                                <div class="summon-bg water-bg"></div>
+                                <div class="summon-content">
+                                    <div class="summon-icon">💧</div>
+                                    <h3 class="summon-name">水系召唤阵</h3>
+                                    <p class="summon-desc">召唤水系宠物</p>
+                                    <div class="summon-cost">
+                                        <span>🪙</span>
+                                        <span>200</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="summon-card" onclick="summonPet('mech')">
+                                <div class="summon-bg mech-bg"></div>
+                                <div class="summon-content">
+                                    <div class="summon-icon">⚙️</div>
+                                    <h3 class="summon-name">机械召唤阵</h3>
+                                    <p class="summon-desc">召唤机械系宠物</p>
+                                    <div class="summon-cost">
+                                        <span>🪙</span>
+                                        <span>200</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="summon-result" id="summonResult"></div>
+                    </div>
+                </div>
+
+                <!-- 战斗面板 -->
+                <div class="panel" id="battlePanel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">⚔️ 竞技场</h2>
+                        <p class="panel-desc">选择你的宠物，开始对战！</p>
+                    </div>
+
+                    <div class="battle-area" id="battleArea">
+                        <div class="battle-empty">
+                            <div class="battle-icon">🏟️</div>
+                            <h3>准备战斗</h3>
+                            <p>从你的宠物中选择一个进行战斗</p>
+                        </div>
+                    </div>
+
+                    <!-- 属性相克Tips -->
+                    <div class="battle-tips">
+                        <h3>属性相克原则</h3>
+                        <p>水克火，火克草，草克电，电克水</p>
+                    </div>
+                </div>
+
+                <!-- 背包面板 -->
+                <div class="panel" id="inventoryPanel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">🎒 背包</h2>
+                        <p class="panel-desc">管理你的道具和装备</p>
+                    </div>
+                    
+                    <div class="inventory-grid" id="inventoryGrid">
+                        <div class="empty-state">
+                            <div class="empty-icon">🎒</div>
+                            <h3>背包空空如也</h3>
+                            <p>去商店购买道具吧！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商城面板 -->
+                <div class="panel" id="shopPanel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">🛒 商城</h2>
+                        <p class="panel-desc">购买道具和装备</p>
+                    </div>
+                    
+                    <div class="shop-grid" id="shopGrid"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 宠物详情弹窗 -->
+    <div class="modal-overlay" id="petModal">
+        <div class="modal-box pet-detail-modal">
+            <button class="modal-close" onclick="closeModal('petModal')">✕</button>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- 通用弹窗 -->
+    <div class="modal-overlay" id="generalModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('generalModal')">✕</button>
+            <div class="modal-body" id="generalModalBody"></div>
+        </div>
+    </div>
+
+    <!-- 战斗动画层 -->
+    <div class="battle-overlay" id="battleOverlay">
+        <div class="battle-animation-content"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
