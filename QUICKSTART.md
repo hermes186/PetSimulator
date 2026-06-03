@@ -35,11 +35,12 @@
 
 ## 安装步骤
 
-### 第一步：下载项目
+### 第一步：下载项目（克隆仓库）
 
 ```bash
-# 确保你在项目目录中
-cd c:/Users/Lenovo/WorkBuddy/2026-05-07-task-1/PetSimulator
+# 克隆仓库到你的本地电脑中
+git clone https://github.com/hermes186/PetSimulator.git
+cd PetSimulator
 ```
 
 ### 第二步：验证环境

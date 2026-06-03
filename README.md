@@ -31,19 +31,29 @@
 
 ### 安装和运行
 
-```bash
-# 进入项目目录
-cd c:/Users/Lenovo/WorkBuddy/2026-05-07-task-1/PetSimulator
+1. **克隆项目到本地**
+   ```bash
+   git clone https://github.com/hermes186/PetSimulator.git
+   cd PetSimulator
+   ```
 
-# 编译后端
-./compile.bat
+2. **编译后端**
+   在 Windows 命令提示符（CMD）或 PowerShell 中运行：
+   ```cmd
+   compile.bat
+   ```
 
-# 启动服务器
-./start_server.bat
+3. **启动服务器**
+   运行启动批处理文件开启 HTTP 服务：
+   ```cmd
+   start_server.bat
+   ```
 
-# 打开浏览器访问
-http://localhost:8080/web/index.html
-```
+4. **访问游戏网页**
+   打开浏览器，访问以下地址进入游戏界面：
+   ```
+   http://localhost:8080/
+   ```
 
 详细步骤请查看 [快速入门指南](QUICKSTART.md)
 
