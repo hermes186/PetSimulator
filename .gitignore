@@ -40,3 +40,9 @@ Thumbs.db
 # 本地调试配置（如果包含本地绝对路径，不建议上传）
 .vscode/launch.json
 .vscode/tasks.json
+launch.json
+tasks.json
+c_cpp_properties.json
+
+# 5. Claude 编辑器配置 (Claude Settings)
+.claude/
