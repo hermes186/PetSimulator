@@ -46,3 +46,10 @@ c_cpp_properties.json
 
 # 5. Claude 编辑器配置 (Claude Settings)
 .claude/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
